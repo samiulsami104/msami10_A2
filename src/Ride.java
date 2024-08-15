@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.Queue;
 
 public class Ride implements RideInterface {
@@ -7,7 +8,7 @@ public class Ride implements RideInterface {
     private Employee operator;
 
     private Queue<Visitor> waitingLine;
-    private LinkedList<Visitor> rideHistory;
+    private LinkedList<Visitor> rideHistory; // LinkedList to store visitors who have taken the ride
 
     // Default constructor
     public Ride() {
@@ -58,5 +59,66 @@ public class Ride implements RideInterface {
         }
     }
 
-    // Existing methods like RunOneCycle() and PrintRideHistory() remain unchanged
+    @Override
+    public void RunOneCycle() {
+        if (operator == null) {
+            System.out.println("The ride cannot run because it is closed (no operator assigned).");
+            return;
+        }
+
+        System.out.println("Running " + rideName + " for a full cycle.");
+
+        int count = 0;
+        while (!waitingLine.isEmpty() && count < capacity) {
+            Visitor visitor = waitingLine.poll();
+            rideHistory.add(visitor); // Add visitor to rideHistory
+            System.out.println(visitor.getFullName() + " is taking the " + rideName + ".");
+            count++;
+        }
+
+        if (count == 0) {
+            System.out.println("No visitors were in the queue for " + rideName + ".");
+        }
+    }
+
+    @Override
+    public void PrintRideHistory() {
+        System.out.println("Ride history for " + rideName + ":");
+        if (rideHistory.isEmpty()) {
+            System.out.println("No visitors have taken the ride yet.");
+        } else {
+            Iterator<Visitor> iterator = rideHistory.iterator();
+            while (iterator.hasNext()) {
+                Visitor visitor = iterator.next();
+                System.out.println("Visitor: " + visitor.getFullName() + ", Age: " + visitor.getYearsOld() + ", Address: " + visitor.getHomeAddress());
+            }
+        }
+    }
+
+    // New methods for managing the ride history (LinkedList)
+
+    // Method to add a Visitor to the ride history
+    public void addVisitorToCollection(Visitor visitor) {
+        rideHistory.add(visitor);
+        System.out.println(visitor.getFullName() + " has been added to the ride history.");
+    }
+
+    // Method to check if a Visitor is in the ride history
+    public boolean isVisitorInCollection(Visitor visitor) {
+        boolean found = rideHistory.contains(visitor);
+        if (found) {
+            System.out.println(visitor.getFullName() + " is in the ride history.");
+        } else {
+            System.out.println(visitor.getFullName() + " is not in the ride history.");
+        }
+        return found;
+    }
+
+    // Method to return the number of Visitors in the ride history
+    public int getNumberOfVisitorsInCollection() {
+        int size = rideHistory.size();
+        System.out.println("Number of visitors in the ride history: " + size);
+        return size;
+    }
 }
+
