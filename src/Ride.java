@@ -1,6 +1,8 @@
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.Iterator;
 import java.util.Queue;
+import java.util.Iterator;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -8,7 +10,7 @@ public class Ride implements RideInterface {
     private Employee operator;
 
     private Queue<Visitor> waitingLine;
-    private LinkedList<Visitor> rideHistory; // LinkedList to store visitors who have taken the ride
+    private LinkedList<Visitor> rideHistory;
 
     // Default constructor
     public Ride() {
@@ -28,7 +30,30 @@ public class Ride implements RideInterface {
         this.rideHistory = new LinkedList<>();
     }
 
-    // Getters and Setters (same as before)
+    // Getters and Setters
+    public String getRideName() {
+        return rideName;
+    }
+
+    public void setRideName(String rideName) {
+        this.rideName = rideName;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public Employee getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Employee operator) {
+        this.operator = operator;
+    }
 
     // Implementing methods from RideInterface
 
@@ -96,14 +121,11 @@ public class Ride implements RideInterface {
     }
 
     // New methods for managing the ride history (LinkedList)
-
-    // Method to add a Visitor to the ride history
     public void addVisitorToCollection(Visitor visitor) {
         rideHistory.add(visitor);
         System.out.println(visitor.getFullName() + " has been added to the ride history.");
     }
 
-    // Method to check if a Visitor is in the ride history
     public boolean isVisitorInCollection(Visitor visitor) {
         boolean found = rideHistory.contains(visitor);
         if (found) {
@@ -114,11 +136,18 @@ public class Ride implements RideInterface {
         return found;
     }
 
-    // Method to return the number of Visitors in the ride history
     public int getNumberOfVisitorsInCollection() {
         int size = rideHistory.size();
         System.out.println("Number of visitors in the ride history: " + size);
         return size;
     }
+
+    public void sortRideHistory(Comparator<Visitor> comparator) {
+        Collections.sort(rideHistory, comparator);
+        System.out.println("The ride history has been sorted.");
+    }
 }
+
+
+
 
